@@ -1,0 +1,6 @@
+# This is a header that says "these are settings for functions"
+[functions]
+
+# This line tells Netlify: "Look for my serverless function
+# code inside a folder named 'netlify/functions/'"
+directory = "netlify/functions/"
