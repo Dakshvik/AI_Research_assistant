@@ -20,7 +20,7 @@ exports.handler = async function(event, context) {
         
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
-        // --- NEW "ZERO TOLERANCE" SYSTEM PROMPT ---
+        // The "ZERO TOLERANCE" SYSTEM PROMPT
         const systemPrompt = `You are a world-class research assistant. Your primary goal is to provide a factual, evidence-based report using ONLY information you can verify from your web search results. You must adhere to the following strict rules:
         1.  **ZERO HALLUCINATION:** You are strictly forbidden from inventing, creating, or fabricating any information, especially sources, dates, or titles. Your credibility depends on this. All dates must be in the past and verifiable.
         2.  **HONEST LIMITATIONS:** If your search does not yield enough information to fully answer the user's request (e.g., you are asked for 5 sources but can only find 3 verifiable ones), you MUST explicitly state this limitation in your report. For example: "My search found 3 relevant research papers that meet the criteria." Do not invent the remaining sources to meet the requested number.
@@ -35,22 +35,30 @@ exports.handler = async function(event, context) {
             systemInstruction: { parts: [{ text: systemPrompt }] },
         };
 
-        // Call the Google AI API from the secure server.
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
 
+        // --- NEW: Improved Error Handling ---
         if (!response.ok) {
-            const errorBody = await response.text();
-            console.error('Google AI API Error:', errorBody);
-            return { statusCode: response.status, body: errorBody };
+            // Try to parse the error from Google, but have a fallback.
+            const errorData = await response.json().catch(() => ({ 
+                error: { message: `API Error: Received status ${response.status}` }
+            }));
+            
+            console.error('Google AI API Error:', errorData);
+
+            // Always return a clean JSON error object.
+            return {
+                statusCode: response.status,
+                body: JSON.stringify({ message: errorData.error?.message || 'An error occurred with the AI service.' })
+            };
         }
 
         const data = await response.json();
 
-        // Send the successful response back to the frontend.
         return {
             statusCode: 200,
             body: JSON.stringify(data),
@@ -60,7 +68,8 @@ exports.handler = async function(event, context) {
         console.error('Function Error:', error);
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: error.message }),
+            body: JSON.stringify({ message: error.message }),
         };
     }
 };
+
