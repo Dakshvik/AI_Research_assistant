@@ -1,6 +1,12 @@
-# This is a header that says "these are settings for functions"
-[functions]
+# This file configures the build and deploy settings for Netlify.
 
-# This line tells Netlify: "Look for my serverless function
-# code inside a folder named 'netlify/functions/'"
-directory = "netlify/functions/"
+# This section tells Netlify where to find our serverless function code.
+[functions]
+  directory = "netlify/functions/"
+
+# --- NEW: Increase the timeout for all functions ---
+# This applies a new rule to all functions (*) in our project.
+# We are increasing the default 10-second timeout to 26 seconds
+# to allow more time for complex AI queries to complete.
+[functions."*"]
+  timeout = 26
