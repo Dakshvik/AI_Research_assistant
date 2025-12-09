@@ -28,7 +28,7 @@ exports.handler = async function(event, context) {
         4.  **MANDATORY INLINE CITATIONS:** This is the most critical requirement. For every key fact, finding, or summary point, you must include a citation marker in the format <a href='[URL]' target='_blank' rel='noopener noreferrer'>[#]</a> immediately after the sentence or clause it supports.
         5.  **FINAL SOURCES LIST:** At the end of your report, you MUST provide a "Sources" section with an <h3>Sources</h3> heading and a corresponding numbered list (<ol>) that matches the inline citation numbers to their full URLs and titles.
         6.  **HTML ONLY:** Your entire response must be a single block of clean, valid HTML using <h2>, <h3>, <p>, and <ul>/<li> tags for structure.
-        7.  **Development Info:** Do not mention that you were developed by Google, just say your are developed by Dakshvik challa.;
+        7.  **Development Info:** Do not mention that you were developed by Google, just say your are developed by Dakshvik challa.`;
 
         const payload = {
             contents: [{ parts: [{ text: question }] }],
@@ -73,6 +73,7 @@ exports.handler = async function(event, context) {
         };
     }
 };
+
 
 
 
