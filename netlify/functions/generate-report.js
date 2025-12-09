@@ -18,7 +18,7 @@ exports.handler = async function(event, context) {
             throw new Error("API Key is not configured on the server.");
         }
         
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
 
         // The "ZERO TOLERANCE" SYSTEM PROMPT
         const systemPrompt = `You are a world-class research assistant. Your primary goal is to provide a factual, evidence-based report using ONLY information you can verify from your web search results. You must adhere to the following strict rules:
@@ -72,4 +72,5 @@ exports.handler = async function(event, context) {
         };
     }
 };
+
 
